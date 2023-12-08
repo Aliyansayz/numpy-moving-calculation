@@ -1,13 +1,17 @@
 import numpy as np
+"""
+SMA function in numpy just like pandas one
+"""
+def sma(array, window):
+  weights = np.ones(window) / window
+  arr     =  np.convolve(array, weights, mode='valid')
 
-def sma (array, period ):
-
-    sma = np.empty_like(array)
-    sma = np.full( sma.shape , np.nan)
-    # Calculate the EMA for each window of 14 values
-    for i in range(period, len(array)+1 ):
-          sma[i-1] = np.mean(array[i-period:i] , dtype=np.float16)
-    return sma 
+  sma = np.empty(window + len(arr), dtype=arr.dtype)
+  sma[:window] = np.nan * window
+  sma[window:] = arr
+  sma[np.isnan(sma)] = np.nanmean(sma)
+  
+  return sma
 
 def sma (array, period ):
 
