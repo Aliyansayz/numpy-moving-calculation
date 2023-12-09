@@ -2,14 +2,15 @@ import numpy as np
 """
 SMA function in numpy just like pandas one
 """
-def sma(array, window):
-  weights = np.ones(window) / window
+def sma(array, period):
+  weights = np.ones(period) / period
   arr     =  np.convolve(array, weights, mode='valid')
-
+  # missing window is period minus 1, shape can be refilled 
+  window = period - 1
   sma = np.empty(window + len(arr), dtype=arr.dtype)
   sma[:window] = np.nan * window
   sma[window:] = arr
-  sma[np.isnan(sma)] = np.nanmean(sma)
+  sma[np.isnan(sma)] = np.nanmean(arr[:period])
   
   return sma
 
