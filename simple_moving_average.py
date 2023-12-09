@@ -15,6 +15,7 @@ def sma(array, period):
   
   return sma
 
+
 def sma (array, period ):
 
     sma = np.empty_like(array)
@@ -24,16 +25,17 @@ def sma (array, period ):
           sma[i] = np.mean(array[i-period:i] , dtype=np.float16)
     return sma 
 
-def sd (array, sma, period ):
 
-    sd = np.empty_like(array)
-    sd = np.full( sma.shape , np.nan)
-    # Calculate the EMA for each window of 14 values
-    for i in range(period, len(array) ):
-          diff = np.array(array[i-period:i] - sma[i] , dtype=np.float32)
-          sqr_diff = diff ** 2 
-          var = np.sum(sqr_diff) / period 
-          sd[i] = np.sqrt( var ) 
-    return sd
+def std_dev(cls, array, period):
+  
+      # Calculate the squared deviations from the mean
+      squared_deviations = (array - sma(array, period ) )**2
+      # Calculate the average squared deviations
+      average_squared_deviations = sma(squared_deviations, period)
+      # Calculate the rolling standard deviation
+      std_dev = np.sqrt(average_squared_deviations)
+
+      return std_dev
+
 
 
